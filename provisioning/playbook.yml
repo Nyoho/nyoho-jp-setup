@@ -1,0 +1,27 @@
+- hosts: all
+  sudo: true
+  tasks:
+
+  - name: 基本的なパッケージをインストール
+    apt: pkg={{item}} state=latest update_cache=yes
+    tags: packages
+    with_items:
+    - build-essential
+    - libsqlite3-dev
+    - libreadline6-dev
+    - libgdbm-dev
+    - zlib1g-dev
+    - libbz2-dev
+    - sqlite3
+    - tk-dev
+    - zip
+    - git
+    - zsh
+
+  - name: Updates cache
+    apt: update_cache=yes
+  - name: Upgrade full
+    apt: upgrade=full
+
+  - name: Install dokku
+    command: wget -qO- https://raw.github.com/progrium/dokku/master/bootstrap.sh | sudo bash
