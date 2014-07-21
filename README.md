@@ -10,6 +10,7 @@ Vagrant でさくらのクラウドに Ubuntu 13.04 を up
 
 ```
 vagrant plugin install vagrant-sakura
+vagrant plugin install dotenv
 vagrant box add dummy https://github.com/tsahara/vagrant-sakura/raw/master/dummy.box
 cp .env.template .env
 edit .env
@@ -18,24 +19,24 @@ edit .env
 ### vagrant up
 
 ```
-eval `cat .env` vagrant up --provider=sakura
+vagrant up --provider=sakura
 ```
 
 ### 各種IDを調べる
 ```
-eval `cat .env` vagrant sakuara-list-id
+vagrant sakuara-list-id
 ```
 
 ### 壊す
 ```
-eval `cat .env` vagrant destroy
+vagrant destroy
 ```
 
 ## Provisioning
 
 ### provision コマンドで
 ```
-eval `cat .env` vagrant provision
+vagrant provision
 ```
 
 ### 手動で Ansible
