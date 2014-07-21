@@ -24,7 +24,7 @@ vagrant up --provider=sakura
 
 ### 各種IDを調べる
 ```
-vagrant sakuara-list-id
+vagrant sakura-list-id
 ```
 
 ### 壊す
