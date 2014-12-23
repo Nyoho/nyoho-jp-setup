@@ -1,0 +1,20 @@
+# file: provisioning/roles/nginx/tasks/main.yml
+- name: install nginx
+  apt: pkg=nginx state=latest #present
+
+- name: put nginx.conf
+  template: src=roles/nginx/templates/nginx.conf.j2 dest=/etc/nginx/nginx.conf
+
+- name: put sites-file
+  template: src=roles/nginx/templates/nyoho.jp.j2 dest=/etc/nginx/sites-available/nyoho.jp
+
+- name: Create symlink in sites-enabled/ from sites-available/
+  file: src=/etc/nginx/sites-available/nyoho.jp dest=/etc/nginx/sites-enabled/nyoho.jp state=link
+  
+- name: install nginx
+  sudo: true
+  apt:  pkg=nginx update_cache=yes
+
+- name: restart nginx
+  sudo: true
+  service: name=nginx state=restarted enabled=yes

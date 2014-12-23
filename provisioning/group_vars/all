@@ -1,0 +1,5 @@
+username: nyoho
+# openssl passwd -salt wayakuso -1 passssworddding
+password: $1$scibload$6ayNi8fj2i7kfvipHNdXU1
+
+

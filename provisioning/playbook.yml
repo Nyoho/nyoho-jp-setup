@@ -1,27 +1,75 @@
 - hosts: all
-  sudo: true
   tasks:
-
   - name: 基本的なパッケージをインストール
+    sudo: true
     apt: pkg={{item}} state=latest update_cache=yes
     tags: packages
     with_items:
     - build-essential
     - libsqlite3-dev
-    - libreadline6-dev
-    - libgdbm-dev
-    - zlib1g-dev
-    - libbz2-dev
+    - libxml2
     - sqlite3
-    - tk-dev
     - zip
+    - emacs24-nox
     - git
     - zsh
+    - lv
+    - autoconf
+    - bison
 
   - name: Updates cache
+    sudo: true
     apt: update_cache=yes
   - name: Upgrade full
+    sudo: true
     apt: upgrade=full
 
-  - name: Install dokku
-    command: wget -qO- https://raw.github.com/progrium/dokku/master/bootstrap.sh | sudo bash
+- name: Install Nginx
+  hosts: all
+  sudo: true
+  roles:
+    - nginx
+  tags:
+    - nginx
+
+- hosts: all
+  sudo: true
+  tasks:
+    - name: create me
+      user: name={{username}} password={{password}} shell=/bin/bash state=present append=yes groups=sudo
+    - name: mkdir ~/.ssh
+      file: dest="/home/{{username}}/.ssh" state=directory
+    - name: download public keys from my GitHub
+      get_url: url=https://github.com/Nyoho.keys dest="/home/{{username}}/.ssh/authorized_keys" mode=0440 force=yes
+    - name: chown
+      file: dest="/home/{{username}}/.ssh" owner={{username}} recurse=yes
+    - name: mkdir /var/www/nyoho.jp
+      file: dest="/var/www/nyoho.jp" state=directory
+    - name: chown
+      file: dest="/var/www/nyoho.jp" owner={{username}} recurse=yes
+
+- hosts: all
+  tasks:
+  - name: clone tDiary
+    sudo: true
+    sudo_user: '{{username}}'
+    git: repo=https://github.com/tdiary/tdiary-core.git dest=/home/{{username}}/var/tdiary/tdiary-core
+    # git: repo=https://github.com/tdiary/tdiary-contrib.git dest=/home/{{username}}/var/tdiary/tdiary-contrib
+    poll: 30
+    async: 600
+
+- name: rbenv
+  hosts: all
+  sudo: true
+  roles:
+    # ansible-galaxy install --roles-path ./roles zzet.rbenv など
+    - role: zzet.rbenv #ansible-rbenv-role
+      rbenv:
+        env: user
+        version: v0.4.0
+        ruby_version: 2.1.5
+      rbenv_users:
+        - { name: "{{username}}", home: "/home/{{username}}/", comment: "Deploy user" }
+      rbenv_plugins:
+        - { name: "rbenv-vars", repo: "git://github.com/sstephenson/rbenv-vars.git", version: "v1.2.0" }
+        - { name: "ruby-build", repo: "git://github.com/sstephenson/ruby-build.git", version: "HEAD" }
