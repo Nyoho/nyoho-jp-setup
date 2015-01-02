@@ -11,6 +11,18 @@ server {
 
        server_name nyoho.jp;
 
+       location = /diary {
+               rewrite ^ /diary/ redirect;
+       }
+
+       location = /tdiary {
+               rewrite ^ /diary/ redirect;
+       }
+
+       location ~ ^/tdiary {
+               rewrite ^/tdiary/(.*)$ /diary/$1 redirect;
+       }
+
        location ~ ^/diary/ {
                rewrite ([0-9\-]+)\.html$ /diary/index.rb?date=$1 last;
                proxy_pass http://tdiary;
