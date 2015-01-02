@@ -16,6 +16,7 @@
     - lv
     - autoconf
     - bison
+    - libffi-dev
 
   - name: Updates cache
     sudo: true
@@ -69,7 +70,7 @@
       rbenv:
         env: user
         version: v0.4.0
-        ruby_version: 2.1.5
+        ruby_version: 2.2.0
       rbenv_users:
         - { name: "{{username}}", home: "/home/{{username}}/", comment: "Deploy user" }
       rbenv_plugins:
