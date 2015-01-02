@@ -47,6 +47,8 @@
       file: dest="/var/www/nyoho.jp" state=directory
     - name: chown
       file: dest="/var/www/nyoho.jp" owner={{username}} recurse=yes
+    - name: put /etc/ssh/sshd_config
+      template: src=templates/sshd_config.j2 dest=/etc/ssh/sshd_config
 
 - hosts: all
   tasks:
