@@ -30,5 +30,5 @@ describe file('/var/www/nyoho.jp') do
   it { should be_directory }
 end
 describe command('ls -ld /var/www/nyoho.jp') do
-  its(:stdout) { should match /2 nyoho/ }
+  its(:stdout) { should match /\d nyoho/ }
 end
