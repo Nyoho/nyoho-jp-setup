@@ -1,0 +1,25 @@
+description "tDiary"
+ 
+start on runlevel [2345]
+stop on runlevel [!2345]
+ 
+respawn
+respawn limit 5 60
+ 
+console log
+setuid nyoho
+setgid nyoho
+ 
+env APP_HOME=/home/nyoho/var/tdiary/wy
+chdir /home/nyoho/var/tdiary/wy
+
+pre-start script
+  export PATH=/home/nyoho/.rbenv/shims:/home/nyoho/.rbenv/bin:$PATH
+  export RBENV_ROOT=/home/nyoho/.rbenv
+  export RAILS_ENV=production
+  exec bundle exec unicorn -c unicorn.rb -E $RAILS_ENV -D
+end script
+ 
+post-stop script
+  exec kill -s QUIT `cat $APP_HOME/tmp/pids/unicorn.pid`
+end script

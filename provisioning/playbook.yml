@@ -50,6 +50,8 @@
       file: dest="/var/www/nyoho.jp" owner={{username}} recurse=yes
     - name: put /etc/ssh/sshd_config
       template: src=templates/sshd_config.j2 dest=/etc/ssh/sshd_config
+    - name: put Upstart conf file for tDiary
+      template: src=templates/tdiary-unicorn.conf.j2 dest=/etc/init/tdiary-unicorn.conf
 
 - hosts: all
   tasks:
