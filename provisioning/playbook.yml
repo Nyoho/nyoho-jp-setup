@@ -37,7 +37,7 @@
   sudo: true
   tasks:
     - name: create me
-      user: name={{username}} password={{password}} shell=/bin/bash state=present append=yes groups=sudo
+      user: name={{username}} password={{password}} shell=/bin/bash state=present append=yes groups=sudo update_password=on_create
     - name: mkdir ~/.ssh
       file: dest="/home/{{username}}/.ssh" state=directory
     - name: download public keys from my GitHub
