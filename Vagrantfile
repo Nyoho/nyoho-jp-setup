@@ -28,7 +28,8 @@ Vagrant.configure("2") do |config|
     # sakura.disk_plan = "4"
     # sakura.disk_source_archive = "112500213364" # Ubuntu 13.04
     # sakura.disk_source_archive = "112600321612" # Ubuntu 14.04 (石狩第1)
-    sakura.disk_source_archive = "112600321618" # Ubuntu 14.04 (石狩第2)
+    # sakura.disk_source_archive = "112600321618" # Ubuntu 14.04 (石狩第2)
+    sakura.disk_source_archive = "112700955889" # Ubuntu 14.04 (石狩第2)
     # sakura.disk_source_archive = "112600545097" # Core OS
     # sakura.disk_source_archive = '112500570421' # CentOS 6.5
     # sakura.disk_source_archive = '112600078993' # FreeBSD 10.0 64bit (基本セット)
