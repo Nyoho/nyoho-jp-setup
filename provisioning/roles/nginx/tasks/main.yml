@@ -8,6 +8,9 @@
 - name: put sites-file
   template: src=roles/nginx/templates/nyoho.jp.j2 dest=/etc/nginx/sites-available/nyoho.jp
 
+- name: put sites-default file
+  template: src=roles/nginx/templates/default.j2 dest=/etc/nginx/sites-available/default
+
 - name: put a default html file
   template: src=roles/nginx/templates/default.html.j2 dest=/usr/share/nginx/html/index.html
 
