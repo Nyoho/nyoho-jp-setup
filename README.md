@@ -14,6 +14,7 @@ nyoho.jp を vagrant up するためのレポジトリです。
 
 ```
 vagrant plugin install vagrant-sakura
+vagrant plugin install vagrant-digitalocean
 vagrant plugin install dotenv
 vagrant box add dummy https://github.com/tsahara/vagrant-sakura/raw/master/dummy.box
 cp .env.template .env
@@ -30,6 +31,12 @@ or
 
 ```
 vagrant up --provider=sakura
+```
+
+or
+
+```
+vagrant up --provider=digital_ocean
 ```
 
 ### さくらのクラウドで各種IDを調べる
@@ -53,7 +60,7 @@ vagrant provision
 
 ### 手動で Ansible する
 ```
-ansible-playbook -i vagrant_ansible_inventory_MyUbuntuServer -u ubuntu -s -vvv provisioning/playbook.yml
+ansible-playbook -i .vagrant/provisioners/ansible/inventory/vagrant_ansible_inventory -u ubuntu -s -vvv provisioning/playbook.yml
 ```
 
 - 参考: http://docs.ansible.com/guide_vagrant.html
@@ -65,4 +72,16 @@ serverspec でテスト
 
 ```
 rake spec
+```
+
+## Digital Ocean
+
+```
+ssh-keygen -t rsa -b 4096 -f ~/.ssh/for_digital_ocean.pem
+```
+
+して出来た .pub を [Account の Setings の Security](https://cloud.digitalocean.com/settings/security) の SSH Keys に登録。
+
+```
+vagrant plugin install vagrant-digitalocean
 ```

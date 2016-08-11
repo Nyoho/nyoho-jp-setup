@@ -41,6 +41,32 @@ Vagrant.configure("2") do |config|
     sakura.zone_id = "is1b" # 石狩第2
   end
 
+  config.vm.provider :digital_ocean do |provider, override|
+    override.vm.box = 'digital_ocean'
+    override.vm.box_url = "https://github.com/devopsgroup-io/vagrant-digitalocean/raw/master/box/digital_ocean.box"
+    override.vm.hostname  = "vagrant-do-test"
+    override.ssh.username = "ubuntu"
+    # override.ssh.username         = ENV['DO_SSH_USERNAME']
+    override.ssh.private_key_path = File.expand_path "~/.ssh/vagrant_do.pem"
+    # override.ssh.private_key_path = ENV['DO_SSH_KEY']
+
+    # provider.client_id = ENV['DO_CLIENT_ID']
+    # provider.api_key = ENV['DO_API_KEY']
+    provider.ssh_key_name = "vagrant_do"
+    provider.token = ENV['DO_ACCESS_TOKEN']
+    provider.image = 'ubuntu-16-04-x64'
+    provider.region = 'sgp1' # Singapore 1
+    # provider.region = 'nyc2' # New York 2
+    provider.size = '512MB'
+
+    provider.private_networking   = true
+    # provider.ca_path              = "/usr/local/share/ca-bundle.crt"
+    provider.setup                = true
+
+    # disable synced_folder: rsync is not installed on DigitalOcean's guest machine
+    override.vm.synced_folder "./", "/vagrant", disabled: true
+  end
+
   config.vm.provision "ansible" do |ansible|
     # ansible.sudo = true
     # ansible.verbose = 'vvvv'
