@@ -1,4 +1,17 @@
 - hosts: all
+  name: pre task
+  become: true
+  become_user: root
+  gather_facts: no
+  pre_tasks:
+    - raw: apt-get -y install python-simplejson python-apt
+
+- hosts: all
+  name: Set timezone variables
+  copy: content='Asia/Tokyo\n' dest=/etc/timezone backup=yes
+  notify: update tzdata
+
+- hosts: all
   tasks:
   - name: 基本的なパッケージをインストール
     sudo: true
@@ -17,6 +30,9 @@
     - autoconf
     - bison
     - libffi-dev
+    - ruby
+    - aptitude
+    - memcached
 
   - name: Updates cache
     sudo: true
