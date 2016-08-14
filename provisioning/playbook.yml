@@ -41,6 +41,26 @@
     sudo: true
     apt: upgrade=full
 
+- name: Create dhparam
+  hosts: all
+  tasks:
+    - name: mkdir -p /etc/nginx/ssl
+      file: dest="/etc/nginx/ssl" state=directory
+    - name: Create dhparam.pem
+      command: openssl dhparam 2048 -out /etc/nginx/ssl/dhparam.pem
+
+- name: Install Let\'s Encrypt
+  hosts: all
+  remote_user: ubuntu
+  roles:
+    - thefinn93.letsencrypt
+  vars:
+    letsencrypt_webroot_path: /var/www
+    letsencrypt_email: algebraicallyClosedField@gmail.com
+    letsencrypt_cert_domains: 
+      - nyoho.jp
+    letsencrypt_renewal_command_args: '--renew-hook "systemctl restart nginx"'
+
 - name: Install Nginx
   hosts: all
   sudo: true
