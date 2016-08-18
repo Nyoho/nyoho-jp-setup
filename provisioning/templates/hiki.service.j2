@@ -1,0 +1,15 @@
+[Unit]
+Description=Hiki
+
+[Service]
+Type=simple
+User={{ username }}
+Group={{ username }}
+WorkingDirectory=/home/{{ username }}/var/hiki/hiki
+Environment=LC_ALL=en_US.UTF-8
+ExecStart=/bin/bash -lc 'bundle exec thin --prefix /wiki -p 9292 start'
+TimeoutSec=30
+Restart=always
+
+[Install]
+WantedBy=multi-user.target
