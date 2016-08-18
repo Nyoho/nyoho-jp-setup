@@ -115,3 +115,9 @@
       rbenv_plugins:
         - { name: "rbenv-vars", repo: "git://github.com/sstephenson/rbenv-vars.git", version: "v1.2.0" }
         - { name: "ruby-build", repo: "git://github.com/sstephenson/ruby-build.git", version: "HEAD" }
+
+- hosts: all
+  sudo: true
+  tasks:
+  - name: Append a swap entry to /etc/fstab
+    mount: name=none src=/swapfile fstype=swap opts=sw passno=0 dump=0 state=present
