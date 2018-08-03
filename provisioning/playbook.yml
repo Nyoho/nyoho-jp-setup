@@ -1,6 +1,6 @@
 - hosts: all
   name: pre task
-  become: true
+  become: yes
   become_user: root
   gather_facts: no
   pre_tasks:
@@ -15,7 +15,7 @@
 - hosts: all
   tasks:
   - name: 基本的なパッケージをインストール
-    sudo: true
+    become: yes
     apt: pkg={{item}} state=latest update_cache=yes
     tags: packages
     with_items:
@@ -36,10 +36,10 @@
     - memcached
 
   - name: Updates cache
-    sudo: true
+    become: yes
     apt: update_cache=yes
   - name: Upgrade full
-    sudo: true
+    become: yes
     apt: upgrade=full
 
 - name: Create dhparam
@@ -64,14 +64,14 @@
 
 - name: Install Nginx
   hosts: all
-  sudo: true
+  become: yes
   roles:
     - nginx
   tags:
     - nginx
 
 - hosts: all
-  sudo: true
+  become: yes
   tasks:
     - name: create me
       user: name={{username}} password={{password}} shell=/bin/bash state=present append=yes groups=sudo update_password=on_create
@@ -97,7 +97,7 @@
 - hosts: all
   tasks:
   - name: clone tDiary
-    sudo: true
+    become: yes
     sudo_user: '{{username}}'
     git: repo=https://github.com/tdiary/tdiary-core.git dest=/home/{{username}}/var/tdiary/tdiary-core
     # git: repo=https://github.com/tdiary/tdiary-contrib.git dest=/home/{{username}}/var/tdiary/tdiary-contrib
@@ -106,7 +106,7 @@
 
 - name: rbenv
   hosts: all
-  sudo: true
+  become: yes
   roles:
     # ansible-galaxy install --roles-path ./roles zzet.rbenv など
     - role: zzet.rbenv #ansible-rbenv-role
@@ -124,7 +124,7 @@
         - { name: "ruby-build", repo: "git://github.com/sstephenson/ruby-build.git", version: "HEAD" }
 
 - hosts: all
-  sudo: true
+  become: yes
   tasks:
   - name: Append a swap entry to /etc/fstab
     mount: name=none src=/swapfile fstype=swap opts=sw passno=0 dump=0 state=present
