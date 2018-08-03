@@ -45,10 +45,15 @@
 - name: Create dhparam
   hosts: all
   tasks:
+    - name: Check dhparam exists
+      stat:
+        path: /etc/nginx/ssl/dhparam.pem
+      register: dhparam_exists
     - name: mkdir -p /etc/nginx/ssl
       file: dest="/etc/nginx/ssl" state=directory
     - name: Create dhparam.pem
       command: openssl dhparam 2048 -out /etc/nginx/ssl/dhparam.pem
+      when: not dhparam_exists.stat.exists
 
 - name: Install Let\'s Encrypt
   hosts: all
