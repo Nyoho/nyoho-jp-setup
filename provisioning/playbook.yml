@@ -65,7 +65,7 @@
     letsencrypt_email: algebraicallyClosedField@gmail.com
     letsencrypt_cert_domains: 
       - nyoho.jp
-    letsencrypt_renewal_command_args: '--renew-hook "systemctl restart nginx"'
+    letsencrypt_renewal_command_args: '--pre-hook "systemctl stop nginx" --post-hook "systemctl start nginx"'
 
 - name: Install Nginx
   hosts: all
