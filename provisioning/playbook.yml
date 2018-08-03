@@ -55,18 +55,6 @@
       command: openssl dhparam 2048 -out /etc/nginx/ssl/dhparam.pem
       when: not dhparam_exists.stat.exists
 
-- name: Install Let\'s Encrypt
-  hosts: all
-  remote_user: ubuntu
-  roles:
-    - thefinn93.letsencrypt
-  vars:
-    letsencrypt_webroot_path: /var/www
-    letsencrypt_email: algebraicallyClosedField@gmail.com
-    letsencrypt_cert_domains: 
-      - nyoho.jp
-    letsencrypt_renewal_command_args: '--pre-hook "systemctl stop nginx" --post-hook "systemctl start nginx"'
-
 - name: Install Nginx
   hosts: all
   become: yes
