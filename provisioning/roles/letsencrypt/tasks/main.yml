@@ -1,0 +1,13 @@
+- name: Update cache
+  apt: update_cache=yes
+
+- name: Install software-properties-common
+  apt: pkg=software-properties-common update_cache=yes
+
+- apt_repository: repo='ppa:certbot/certbot'
+
+- name: Updates cache
+  apt: update_cache=yes
+
+- name: Install python-certbot-nginx
+  apt: pkg=python-certbot-nginx update_cache=yes

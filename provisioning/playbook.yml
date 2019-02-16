@@ -63,6 +63,19 @@
   tags:
     - nginx
 
+- name: Install Let's Encrypt
+  hosts: all
+  become: yes
+  roles:
+    - letsencrypt
+  vars:
+    letsencrypt_webroot_path: /var/www
+    letsencrypt_email: algebraicallyClosedField@gmail.com
+    letsencrypt_cert_domains: 
+      - nyoho.jp
+  tags:
+    - letsencrypt
+
 - hosts: all
   become: yes
   tasks:
