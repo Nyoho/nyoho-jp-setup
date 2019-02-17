@@ -1,0 +1,98 @@
+- name: pre task
+  become: yes
+  become_user: root
+  apt: pkg={{item}} state=latest update_cache=yes
+  with_items:
+    - python-simplejson
+    - python-apt
+
+- name: Set timezone variables
+  timezone:
+    name: Asia/Tokyo
+
+# - hosts: all
+#   tasks:
+#   - name: apt-get clean
+#     shell: apt-get clean
+#     become: true
+#   - name: apt-get update
+#     shell: apt-get update
+#     become: true
+#   - apt: name=aptitude state=present
+#   - apt: update_cache=yes upgrade=safe cache_valid_time=3600
+  
+- name: 基本的なパッケージをインストール
+  become: yes
+  apt: pkg={{item}} state=latest update_cache=yes
+  tags: packages
+  with_items:
+  - build-essential
+  - libsqlite3-dev
+  - libxml2
+  - sqlite3
+  - zip
+  - emacs24-nox
+  - git
+  - zsh
+  - lv
+  - autoconf
+  - bison
+  - libffi-dev
+  - ruby
+  - aptitude
+  - memcached
+
+- name: Updates cache
+  become: yes
+  apt: update_cache=yes
+- name: Upgrade full
+  become: yes
+  apt: upgrade=full
+
+# Create dhparam
+- name: Check dhparam exists
+  stat:
+    path: /etc/nginx/ssl/dhparam.pem
+  register: dhparam_exists
+- name: mkdir -p /etc/nginx/ssl
+  file: dest="/etc/nginx/ssl" state=directory
+- name: Create dhparam.pem
+  command: openssl dhparam 2048 -out /etc/nginx/ssl/dhparam.pem
+  when: not dhparam_exists.stat.exists
+
+# - name: Install Let's Encrypt
+#   hosts: all
+#   become: yes
+#   roles:
+#     - letsencrypt
+#   vars:
+#     letsencrypt_webroot_path: /var/www
+#     letsencrypt_email: algebraicallyClosedField@gmail.com
+#     letsencrypt_cert_domains: 
+#       - nyoho.jp
+#   tags:
+#     - letsencrypt
+
+- name: create me
+  user: name={{username}} password={{password}} shell=/bin/bash state=present append=yes groups=sudo update_password=on_create
+- name: mkdir ~/.ssh
+  file: dest="/home/{{username}}/.ssh" state=directory
+- name: download public keys from my GitHub
+  get_url: url=https://github.com/Nyoho.keys dest="/home/{{username}}/.ssh/authorized_keys" mode=0440 force=yes
+- name: chown
+  file: dest="/home/{{username}}/.ssh" owner={{username}} recurse=yes
+- name: mkdir /var/www/nyoho.jp
+  file: dest="/var/www/nyoho.jp" state=directory
+- name: chown
+  file: dest="/var/www/nyoho.jp" owner={{username}} recurse=yes
+- name: put /etc/ssh/sshd_config
+  template: src=templates/sshd_config.j2 dest=/etc/ssh/sshd_config
+- name: put Upstart conf file for tDiary
+  template: src=templates/tdiary-unicorn.conf.j2 dest=/etc/init/tdiary-unicorn.conf
+- name: put systemd unit for tDiary
+  template: src=templates/tdiary.service.j2 dest=/etc/systemd/system/multi-user.target.wants/tdiary.service
+- name: put systemd unit for Hiki
+  template: src=templates/hiki.service.j2 dest=/etc/systemd/system/multi-user.target.wants/hiki.service
+
+- name: Append a swap entry to /etc/fstab
+  mount: name=none src=/swapfile fstype=swap opts=sw passno=0 dump=0 state=present
