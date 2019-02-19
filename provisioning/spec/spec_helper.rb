@@ -14,7 +14,7 @@ vars = AnsibleSpec.get_variables(host, group_idx,hosts)
 ssh_config_file = AnsibleSpec.get_ssh_config_file
 set_property vars
 
-connection = ENV['TARGET_CONNECTION']
+connection = 'ssh' # ENV['TARGET_CONNECTION']
 
 case connection
 when 'ssh'
@@ -23,15 +23,15 @@ when 'ssh'
 #
   set :backend, :ssh
 
-  if ENV['ASK_BECOME_PASSWORD']
+  if ENV['ASK_SUDO_PASSWORD']
     begin
       require 'highline/import'
     rescue LoadError
       fail "highline is not available. Try installing it."
     end
-    set :become_password, ask("Enter become password: ") { |q| q.echo = false }
+    set :sudo_password, ask("Enter sudo password: ") { |q| q.echo = false }
   else
-    set :become_password, ENV['BECOME_PASSWORD']
+    set :sudo_password, ENV['SUDO_PASSWORD']
   end
 
   options = Net::SSH::Config.for(host)

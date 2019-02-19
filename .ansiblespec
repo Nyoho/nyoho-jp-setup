@@ -1,4 +1,0 @@
----
--
-  playbook: provisioning/playbook.yml
-  inventory: provisioning/hosts
