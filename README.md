@@ -63,15 +63,22 @@ vagrant provision
 ansible-playbook -i .vagrant/provisioners/ansible/inventory/vagrant_ansible_inventory -u ubuntu -s -vvv provisioning/playbook.yml
 ```
 
+```
+ansible-playbook -i provisioning/hosts provisioning/playbook.yml --ask-become-pass
+```
+
 - 参考: http://docs.ansible.com/guide_vagrant.html
 
 
 ## Testing
 
-serverspec でテスト
+`provisioning/` ディレクトリで実行するようにしました。
+
+`ansible_spec` でテスト
 
 ```
-rake spec
+cd provisioning
+env ASK_SUDO_PASSWORD=1 rake serverspec:Ansible-My-TDD
 ```
 
 ## Digital Ocean
