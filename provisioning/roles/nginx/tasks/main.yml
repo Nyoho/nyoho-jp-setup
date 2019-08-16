@@ -8,6 +8,14 @@
 - name: put sites-file
   template: src=roles/nginx/templates/nyoho.jp.j2 dest=/etc/nginx/sites-available/nyoho.jp
 
+- name: put sites-files for subdomains
+  template: src=roles/nginx/templates/washipo.nyoho.jp.j2 dest=/etc/nginx/sites-available/washipo.nyoho.jp
+
+- name: put sites-files for subdomains
+  template: src=roles/nginx/templates/marupokesearch.j2 dest=/etc/nginx/sites-available/marupokesearch.nyoho.jp
+- name: put sites-files for subdomains
+  template: src=roles/nginx/templates/mathtodon.nyoho.jp.j2 dest=/etc/nginx/sites-available/mathtodon.nyoho.jp
+
 - name: put sites-default file
   template: src=roles/nginx/templates/default.j2 dest=/etc/nginx/sites-available/default
 
