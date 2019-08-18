@@ -1,10 +1,11 @@
 - name: pre task
   become: yes
-  become_user: root
-  apt: pkg={{item}} state=latest update_cache=yes
-  with_items:
-    - python-simplejson
-    - python-apt
+  apt:
+    name:
+      - python-simplejson
+      - python-apt
+    state: latest
+    update_cache: yes
 
 - name: Set timezone variables
   timezone:
@@ -23,24 +24,26 @@
   
 - name: 基本的なパッケージをインストール
   become: yes
-  apt: pkg={{item}} state=latest update_cache=yes
+  apt:
+    name:
+      - build-essential
+      - libsqlite3-dev
+      - libxml2
+      - sqlite3
+      - zip
+      - emacs24-nox
+      - git
+      - zsh
+      - lv
+      - autoconf
+      - bison
+      - libffi-dev
+      - ruby
+      - aptitude
+      - memcached
+    state: latest
+    update_cache: yes
   tags: packages
-  with_items:
-  - build-essential
-  - libsqlite3-dev
-  - libxml2
-  - sqlite3
-  - zip
-  - emacs24-nox
-  - git
-  - zsh
-  - lv
-  - autoconf
-  - bison
-  - libffi-dev
-  - ruby
-  - aptitude
-  - memcached
 
 - name: Updates cache
   become: yes
