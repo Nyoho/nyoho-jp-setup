@@ -20,7 +20,7 @@
   template: src=roles/nginx/templates/default.j2 dest=/etc/nginx/sites-available/default
 
 - name: put a default html file
-  template: src=roles/nginx/templates/default.html.j2 dest=/usr/share/nginx/html/index.html
+  template: src=roles/nginx/templates/default.html.j2 dest=/var/www/html/index.html
 
 - name: Create symlink in sites-enabled/ from sites-available/
   file: src=/etc/nginx/sites-available/nyoho.jp dest=/etc/nginx/sites-enabled/nyoho.jp state=link
