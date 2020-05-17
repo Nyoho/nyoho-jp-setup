@@ -9,5 +9,6 @@ WorkingDirectory=/home/{{ username }}/var/tdiary/wy
 ExecStart=/bin/bash -lc 'bundle exec unicorn -c unicorn.rb -E production'
 TimeoutSec=30
 Restart=always
-                                                                                                    [Install]
+
+[Install]
 WantedBy=multi-user.target
