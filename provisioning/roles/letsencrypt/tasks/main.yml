@@ -13,4 +13,4 @@
   apt: pkg=python-certbot-nginx update_cache=yes
 
 - name: Put renewal hook
-  template: src=templates/01-reload-nginx.j2 dest=/etc/letsencrypt/renewal-hooks/deploy/01-reload-nginx
+  template: src=templates/01-reload-nginx.j2 dest=/etc/letsencrypt/renewal-hooks/post/01-reload-nginx mode=0755
