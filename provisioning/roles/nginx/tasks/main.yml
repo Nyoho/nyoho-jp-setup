@@ -26,9 +26,9 @@
   file: src=/etc/nginx/sites-available/nyoho.jp dest=/etc/nginx/sites-enabled/nyoho.jp state=link
   
 - name: install nginx
-  sudo: true
+  become: true
   apt:  pkg=nginx update_cache=yes
 
 - name: restart nginx
-  sudo: true
+  become: true
   service: name=nginx state=restarted enabled=yes
