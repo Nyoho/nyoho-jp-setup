@@ -1,0 +1,45 @@
+---
+- name: Message
+  debug:
+    msg: "Let's get certs for {{ domain }}!"
+
+- name: Make directory for letsencrypt requests
+  file: path=/var/www/letsencrypt state=directory owner=root group=root mode=0755
+  
+- name: Install a nginx conf for a certbot request (to be overwritten)
+  template:
+    src: nginx-http.j2
+    dest: /etc/nginx/sites-available/{{ domain }}.conf
+    
+- name: Create symlink in sites-enabled/ from sites-available/
+  file: src=/etc/nginx/sites-available/{{ domain }}.conf dest=/etc/nginx/sites-enabled/{{ domain }}.conf state=link
+
+- name: Reload nginx to get a letsencrypt cert
+  service: name=nginx state=restarted
+
+- name: Create letsencrypt certificate
+  shell: certbot certonly -n --webroot -w /var/www/letsencrypt -m {{ letsencrypt_email }} --agree-tos -d {{ domain }}
+  args:
+    creates: /etc/letsencrypt/live/{{ domain }}
+
+- name: Put sites-file
+  template:
+    src: nginx-ssl.j2
+    dest: /etc/nginx/sites-available/{{ domain }}.conf
+
+- name: Make directory for letsencrypt requests
+  file: path=/var/www/{{ domain }} state=directory owner=root group=root mode=0755
+
+- name: Check index.html exists
+  stat:
+    path: /var/www/{{ domain }}/index.html
+  register: indexhtml_exists
+
+- name: Put index.html unless it exists
+  template:
+    src: index.html.j2
+    dest: /var/www/{{ domain }}/index.html
+  when: not indexhtml_exists.stat.exists
+
+- name: Reload nginx to activate letsencrypt site
+  service: name=nginx state=restarted

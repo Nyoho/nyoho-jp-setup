@@ -1,0 +1,10 @@
+- name: apt update
+  apt:
+    update_cache: yes
+
+- name: Install nginx, certbot
+  apt:
+    pkg: 
+      - nginx
+      - certbot
+    state: latest

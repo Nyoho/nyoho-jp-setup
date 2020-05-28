@@ -1,0 +1,28 @@
+---
+# Create dhparam
+- name: Check dhparam exists
+  stat:
+    path: /etc/nginx/dhparams.pem
+  register: dhparam_exists
+
+- name: mkdir -p /etc/nginx
+  file: dest="/etc/nginx" state=directory
+
+- name: Create dhparams.pem
+  command: openssl dhparam 2048 > /etc/nginx/dhparams.pem
+  when: not dhparam_exists.stat.exists
+
+# Get certs
+- name: Get certs
+  vars:
+    domains:
+      - nyoho.jp
+      - washipo.nyoho.jp
+      - mathtodon.nyoho.jp
+      - marupokesearch.nyoho.jp
+    letsencrypt_email: algebraicallyClosedField@gmail.com
+
+  include_tasks: getting-cert.yml
+  loop: "{{ domains }}"
+  loop_control:
+    loop_var: domain
