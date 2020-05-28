@@ -30,7 +30,7 @@ server {
     ssl_ecdh_curve prime256v1;
     ssl_prefer_server_ciphers on;
     ssl_session_cache shared:SSL:128m;
-    ssl_dhparam /etc/nginx/ssl/dhparam.pem;
+    ssl_dhparam /etc/nginx/dhparams.pem;
     add_header Strict-Transport-Security "max-age=31536000";
 
     add_header X-Content-Type-Options "nosniff";
