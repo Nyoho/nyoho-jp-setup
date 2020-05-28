@@ -12,7 +12,8 @@
   template: src=roles/nginx/templates/washipo.nyoho.jp.j2 dest=/etc/nginx/sites-available/washipo.nyoho.jp
 
 - name: put sites-files for subdomains
-  template: src=roles/nginx/templates/marupokesearch.j2 dest=/etc/nginx/sites-available/marupokesearch.nyoho.jp
+  template: src=roles/nginx/templates/marupokesearch.nyoho.jp.j2 dest=/etc/nginx/sites-available/marupokesearch.nyoho.jp
+
 - name: put sites-files for subdomains
   template: src=roles/nginx/templates/mathtodon.nyoho.jp.j2 dest=/etc/nginx/sites-available/mathtodon.nyoho.jp
 
