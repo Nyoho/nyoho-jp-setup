@@ -1,7 +1,7 @@
-nyoho.jp を Vagrant up
+Set nyoho.jp up
 ================
 
-nyoho.jp を vagrant up するためのレポジトリです。
+nyoho.jp をセットアップするするためのレポジトリです。
 
 - テスト用にローカルで VirtualBox に vagrant up
 - 本番用にさくらのクラウドに vagrant up
@@ -62,6 +62,8 @@ vagrant provision
 ```
 ansible-playbook -i .vagrant/provisioners/ansible/inventory/vagrant_ansible_inventory -u ubuntu -s -vvv provisioning/playbook.yml
 ```
+
+vagarantの情報を使わずに `provisioning/hosts` ファイルの情報から provision するには次。
 
 ```
 ansible-playbook -i provisioning/hosts provisioning/playbook.yml --ask-become-pass
