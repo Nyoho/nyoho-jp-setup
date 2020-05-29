@@ -6,16 +6,16 @@
   template: src=roles/nginx/templates/nginx.conf.j2 dest=/etc/nginx/nginx.conf
 
 - name: put sites-file
-  template: src=roles/nginx/templates/nyoho.jp.j2 dest=/etc/nginx/sites-available/nyoho.jp
+  template: src=roles/nginx/templates/nyoho.jp.conf.j2 dest=/etc/nginx/sites-available/nyoho.jp.conf
 
 - name: put sites-files for subdomains
-  template: src=roles/nginx/templates/washipo.nyoho.jp.j2 dest=/etc/nginx/sites-available/washipo.nyoho.jp
+  template: src=roles/nginx/templates/washipo.nyoho.jp.conf.j2 dest=/etc/nginx/sites-available/washipo.nyoho.jp.conf
 
 - name: put sites-files for subdomains
-  template: src=roles/nginx/templates/marupokesearch.nyoho.jp.j2 dest=/etc/nginx/sites-available/marupokesearch.nyoho.jp
+  template: src=roles/nginx/templates/marupokesearch.nyoho.jp.conf.j2 dest=/etc/nginx/sites-available/marupokesearch.nyoho.jp.conf
 
 - name: put sites-files for subdomains
-  template: src=roles/nginx/templates/mathtodon.nyoho.jp.j2 dest=/etc/nginx/sites-available/mathtodon.nyoho.jp
+  template: src=roles/nginx/templates/mathtodon.nyoho.jp.conf.j2 dest=/etc/nginx/sites-available/mathtodon.nyoho.jp.conf
 
 - name: put sites-default file
   template: src=roles/nginx/templates/default.j2 dest=/etc/nginx/sites-available/default
@@ -24,7 +24,7 @@
   template: src=roles/nginx/templates/default.html.j2 dest=/var/www/html/index.html
 
 - name: Create symlink in sites-enabled/ from sites-available/
-  file: src=/etc/nginx/sites-available/nyoho.jp dest=/etc/nginx/sites-enabled/nyoho.jp state=link
+  file: src=/etc/nginx/sites-available/nyoho.jp.conf dest=/etc/nginx/sites-enabled/nyoho.jp.conf state=link
   
 - name: install nginx
   become: true
