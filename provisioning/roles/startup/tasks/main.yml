@@ -13,9 +13,19 @@
 - name: put /etc/ssh/sshd_config
   template: src=templates/sshd_config.j2 dest=/etc/ssh/sshd_config
 - name: put systemd unit for tDiary
-  template: src=templates/tdiary.service.j2 dest=/etc/systemd/system/multi-user.target.wants/tdiary.service
+  template: src=templates/tdiary.service.j2 dest=/etc/systemd/system/tdiary.service
 - name: put systemd unit for Hiki
-  template: src=templates/hiki.service.j2 dest=/etc/systemd/system/multi-user.target.wants/hiki.service
+  template: src=templates/hiki.service.j2 dest=/etc/systemd/system/hiki.service
 
+- name: Start services
+  systemd:
+    name: "{{ item }}"
+    state: restarted
+    enabled: yes
+    daemon_reload: yes
+  loop:
+    - tdiary
+    - hiki
+    
 - name: Append a swap entry to /etc/fstab
   mount: name=none src=/swapfile fstype=swap opts=sw passno=0 dump=0 state=present

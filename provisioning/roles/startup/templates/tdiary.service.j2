@@ -6,7 +6,7 @@ Type=simple
 User={{ username }}
 Group={{ username }}
 WorkingDirectory=/home/{{ username }}/var/tdiary/wy
-ExecStart=/bin/bash -lc 'bundle exec unicorn -c unicorn.rb -E production'
+ExecStart=/bin/bash -lc '/home/{{ username }}/.rbenv/shims/bundle exec unicorn -c unicorn.rb -E production'
 TimeoutSec=30
 Restart=always
 
